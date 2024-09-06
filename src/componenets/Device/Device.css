@@ -1,0 +1,13 @@
+.Device {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Device > img {
+    width: 45%;
+}
+
+.Device > .DeviceInfo {
+    margin: 0.3rem 1rem;
+}
