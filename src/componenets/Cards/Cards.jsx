@@ -2,8 +2,8 @@ import React from 'react'
 import './Cards.css'
 import Avid from '../Avid/Avid'
 import Device from '../Device/Device'
-import { motion, useScroll, useMotionValueEvent, useMotionValue, useInView, useAnimationControls } from "framer-motion";
-import { useState, useRef, useEffect } from 'react';
+import { motion, useAnimationControls } from "framer-motion";
+import { useRef, useEffect } from 'react';
 
 
 const Cards = (props) => {
@@ -13,64 +13,21 @@ const Cards = (props) => {
   const ref = useRef(null)
   useEffect(()=> {
 
-    const observer = new IntersectionObserver(
+    const switchObserver = new IntersectionObserver(
       ([entry]) => {
-        // hello
-
-        console.log("new")
-        console.log("here")
         if (entry.isIntersecting) {
           const checkHeight = parseInt(window.innerHeight/2 + 80)
 
-          console.log("check height: " + checkHeight)
-          // console.log("check Height: " + checkHeight)
-          // console.log("y: " + entry.boundingClientRect.top + window.scrollY)
-          console.log(entry.target)
-          console.log(entry.boundingClientRect)
-          // console.log("y: " + entry.boundingClientRect.bottom)
-          // if (entry.target.classList.contains("top")) {
-          //   entry.target.classList.replace("top","bottom");
-          //   deviceControls.start("deviceUp")
-          //   avidControls.start("avidDown")
-          // } else if (entry.target.classList.contains("bottom")) {
-          //   entry.target.classList.replace("bottom","top")
-          //   deviceControls.start("deviceDown")
-          //   avidControls.start("avidUp")
-          // }
-
           if (entry.boundingClientRect.bottom < checkHeight) {
-              deviceControls.start("deviceUp")
-              avidControls.start("avidDown")
+            deviceControls.start("deviceUp")
+            avidControls.start("avidDown")
           } else {
-              deviceControls.start("deviceDown")
-              avidControls.start("avidUp")
+            deviceControls.start("deviceDown")
+            avidControls.start("avidUp")
           }
         }
-
-        // console.log(entry.target.children)
-        // const cards = document.querySelectorAll(".Cards").forEach((card)=> {
-          // console.log(entry)
-          // console.log(card)
-          // console.log(card.getBoundingClientRect())
-          // const checkValue = card.getBoundingClientRect().top + window.scrollY // y value coord
-          // const checkValue = card.getBoundingClientRect().y
-          // console.log(checkValue < checkHeight)
-          // console.log(card.getBoundingClientRect().bottom < checkHeight && entry.intersectionRect.bottom != 0)
-          // if (checkValue < checkHeight) {
-          //   // card.classList.add("up")
-          //   setIsTop(true)
-          // } else {
-          //   // card.classList.remove("up")
-          //   setIsTop(false)
-          // }
-          // console.log(isTop)
-
-
-          // card.classList.toggle("up", checkValue < checkHeight)
-
       },
       { 
-        // threshold: 0.5 ,
         rootMargin: "-50% 0px"
       }
     );
@@ -79,11 +36,6 @@ const Cards = (props) => {
       ([entry]) => {
         if (entry.isIntersecting) {
           const checkHeight = parseInt(window.innerHeight/2 + 80)
-
-          console.log("check height: " + checkHeight)
-          console.log(entry.target)
-          console.log(entry.boundingClientRect)
-
           if (entry.boundingClientRect.bottom < checkHeight) {
             deviceControls.start("deviceDown", {
               duration: 0.01
@@ -107,26 +59,13 @@ const Cards = (props) => {
       }
     );
 
-    // Run the logic once on component load
-    // if (ref.current) {
-    //   console.log("ran")
-    //   // const entry = ref.current.getBoundingClientRect();
-    //   // console.log(ref.current.classList)
-    //   if (ref.current.classList.contains("top")) {
-    //     deviceControls.start("deviceDown")
-    //     avidControls.start("avidUp")
-    //   } else if (ref.current.classList.contains("bottom")) {
-    //     deviceControls.start("deviceUp")
-    //     avidControls.start("avidDown")
-    //   }
-    // }
     if (ref.current) {
-      observer.observe(ref.current);
+      switchObserver.observe(ref.current);
       entryObserver.observe(ref.current)
     }
     return () => {
       if (ref.current) {
-        observer.unobserve(ref.current)
+        switchObserver.unobserve(ref.current)
         entryObserver.unobserve(ref.current)
       }
     }
