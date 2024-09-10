@@ -1,0 +1,81 @@
+.DeviceDashboard{
+    padding: 5rem 0 ;
+    /* color: white; */
+    display: flex;
+    flex-direction: column;
+    /* display: grid;
+    grid-template-columns: repeat(5, 1fr); */
+    justify-self: center;
+    row-gap: 12vh;
+    overflow: scroll;
+    width: 100%;
+    align-items: center;
+
+    /* height: 300px; */
+    overflow: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-padding: 5rem;
+}
+
+.device-row{
+    display: flex;
+    /* flex-direction: column; */
+
+    scroll-snap-align: start;
+    padding-bottom: 5rem;
+}
+
+.infinite-scroll-loop-outer {
+    position: relative;
+}
+
+.infinite-scroll-loop-outer::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* background: linear-gradient(
+        #fff 0%,
+        rgba(255, 255, 255, 0) calc(15%),
+        rgba(255, 255, 255, 0) calc(85%),
+        #fff 100%
+    ); */
+    pointer-events: none;
+}
+
+.infinite-scroll-loop-inner {
+    overflow-y: scroll;
+    scrollbar-width: none;
+    /* overflow: scroll; */
+    scroll-snap-type: y mandatory;
+    scroll-padding: 2rem;
+}
+
+.infinite-scroll-loop-inner::-webkit-scrollbar {
+    /* display: none; */
+}
+
+.Cards {
+    margin: 0.5rem;
+    height: 38vh;
+    min-height: 38vh;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    width: 25vh;
+}
+
+.DeviceDashboard .Cards:nth-child(-n+5) {
+    /* scroll-snap-align: start; */
+}
+
+.DeviceDashboard .Cards:nth-child(n+6):nth-child(-n+10) { 
+    /* align-self: flex-end; */
+    
+}
+
+.error-img {
+    filter: brightness(40%)
+}

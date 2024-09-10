@@ -1,0 +1,13 @@
+.Avid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Avid > img {
+    width: 60%;
+}
+
+.Avid > .DeviceInfo {
+    margin: 0.3rem 0;
+}
