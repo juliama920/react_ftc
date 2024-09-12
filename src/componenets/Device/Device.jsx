@@ -4,11 +4,14 @@ import ECM from '../../imgs/ecm_back_perspective.svg'
 import DeviceInfo from '../DeviceInfo/DeviceInfo'
 
 import { motion } from 'framer-motion'
+import { forwardRef } from 'react'
+import { useXarrow } from 'react-xarrows'
 
-const Device = (data) => {
+const Device = forwardRef((data, ref) => {
+    const updateXarrow = useXarrow();
     return (
         <div className='Device'>
-            <img src={ECM} alt="" className={data.device_status==='OK'?'':'error-img'}/>
+            <img src={ECM} ref={ref} onScroll={updateXarrow} alt="" className={data.device_status==='OK'?'':'error-img'}/>
             <DeviceInfo
             device={data.device}
             bandwidth={data.bandwidth}
@@ -18,6 +21,6 @@ const Device = (data) => {
             />
         </div>
     )
-}
+})
 
 export default Device

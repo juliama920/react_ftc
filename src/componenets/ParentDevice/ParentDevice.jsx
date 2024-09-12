@@ -5,10 +5,10 @@ import DeviceInfo from '../DeviceInfo/DeviceInfo'
 
 import { GatewayData } from '../../Data/Data'
 
-const ParentDevice = () => {
+const ParentDevice = React.forwardRef((props, ref) => {
     return (
-        <div className='ParentDevice'>
-            <img src={Gateway} alt="" />
+        <div className='ParentDevice' id="ParentDevice">
+            <img src={Gateway} alt="" ref={ref}/>
             <DeviceInfo
             device={GatewayData.device}
             bandwidth={GatewayData.bandwidth}
@@ -17,6 +17,6 @@ const ParentDevice = () => {
             />
         </div>
     )
-}
+})
 
 export default ParentDevice

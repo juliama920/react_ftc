@@ -3,14 +3,18 @@ import './Cards.css'
 import Avid from '../Avid/Avid'
 import Device from '../Device/Device'
 import { motion, useAnimationControls } from "framer-motion";
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, forwardRef } from 'react';
+import Xarrow, {useXarrow, Xwrapper} from 'react-xarrows'
 
 
-const Cards = (props) => {
+const Cards = React.forwardRef((props, ref) => {
+  const updateXarrow = useXarrow()
   const avidControls = useAnimationControls();
   const deviceControls = useAnimationControls();
 
-  const ref = useRef(null)
+  const cardRef = useRef(null)
+  const avidRef = useRef()
+  const deviceRef = useRef(ref)
   useEffect(()=> {
 
     const switchObserver = new IntersectionObserver(
@@ -59,63 +63,74 @@ const Cards = (props) => {
       }
     );
 
-    if (ref.current) {
-      switchObserver.observe(ref.current);
-      entryObserver.observe(ref.current)
+    if (cardRef.current) {
+      switchObserver.observe(cardRef.current);
+      // entryObserver.observe(cardRef.current)
     }
     return () => {
-      if (ref.current) {
-        switchObserver.unobserve(ref.current)
-        entryObserver.unobserve(ref.current)
+      if (cardRef.current) {
+        switchObserver.unobserve(cardRef.current)
+        // entryObserver.unobserve(cardRef.current)
       }
     }
   }, [])
 
+
   return (
     <div 
-    ref={ref}
+    ref={cardRef}
     className={props.orientation==='top'?'Cards top':'Cards bottom'}>
+      <Xwrapper>
       <motion.div
-      variants={{
-        avidUp: {
-            y: 0
-        },
-        avidDown: {
-            y: 160
-        }
-      }}
-      animate= {avidControls}
-      transition={{ease:'backInOut'}}
-      >
-        <Avid 
-        user={props.user}
-        avid_latency={props.avid_latency}
-        avid_status={props.avid_status}
-        />
-      </motion.div>
-      <motion.div
-      variants={{
-        deviceUp: {
-            y: -270
-        },
-        deviceDown: {
-            y: 0
-        }
-      }}  
-      animate= {deviceControls}
-      transition={{ease:'backInOut'}}
-      >
-        <Device 
-        device={props.device}
-        bandwidth={props.bandwidth}
-        device_latency={props.device_latency}
-        warning={props.warning}
-        device_status={props.device_status}
-        />
+        variants={{
+          avidUp: {
+              y: 0
+          },
+          avidDown: {
+              y: 160
+          }
+        }}
+        animate= {avidControls}
+        transition={{ease:'easeOut'}}
+        onAnimationEnd={updateXarrow}
+        >
+          <Avid 
+          user={props.user}
+          avid_latency={props.avid_latency}
+          avid_status={props.avid_status}
+          ref={avidRef}
+          />
+        </motion.div>
+        <motion.div
+        variants={{
+          deviceUp: {
+              y: -270
+          },
+          deviceDown: {
+              y: 0
+          }
+        }}  
+        animate= {deviceControls}
+        transition={{ease:'easeOut'}}
+        id={props.device + props.user}
+        onAnimationEnd={updateXarrow}
+        >
+          <Device 
+          device={props.device}
+          bandwidth={props.bandwidth}
+          device_latency={props.device_latency}
+          warning={props.warning}
+          device_status={props.device_status}
+          ref={deviceRef}
+          />
 
-      </motion.div>
+        </motion.div>
+
+        <Xarrow start={avidRef} end={deviceRef} curveness={0} showHead={false} color='green' startAnchor={"middle"} zIndex={-1} divContainerStyle={{ position: "relative" }}></Xarrow>
+
+      </Xwrapper>
     </div>
   )
-}
+})
 
 export default Cards
