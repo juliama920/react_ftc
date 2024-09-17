@@ -9,9 +9,11 @@ import { useXarrow } from 'react-xarrows'
 
 const Device = forwardRef((data, ref) => {
     const updateXarrow = useXarrow();
+    // console.log("device: ")
+    // console.log(ref)
     return (
         <div className='Device'>
-            <img src={ECM} ref={ref} onScroll={updateXarrow} alt="" className={data.device_status==='OK'?'':'error-img'}/>
+            <img src={ECM} ref={ref} style={{filter:"hue-rotate(90deg);"}} onScroll={updateXarrow} alt="" className={data.device_status==='OK'?'':'error-img'}/>
             <DeviceInfo
             device={data.device}
             bandwidth={data.bandwidth}

@@ -4,6 +4,8 @@ import { DevicesData } from '../../Data/Data'
 import Cards from '../Cards/Cards'
 import { useRef } from 'react'
 import Xarrow from 'react-xarrows'
+import { useEffect } from 'react'
+import {useXarrow} from 'react-xarrows'
 
 
 function InfiniteScrollLoop({
@@ -63,17 +65,58 @@ function InfiniteScrollLoop({
 
 
 const DeviceDashboard = ({parentDeviceRef}) => {
-    console.log(parentDeviceRef)
+
+    const updateXarrow = useXarrow();
+    // console.log(parentDeviceRef.current)
     const cardRef = useRef(null)
     const rows = DevicesData.reduce(function (rows, key, index) { 
         return (index % 5 === 0 ? rows.push([key]) 
           : rows[rows.length-1].push(key)) && rows;
-      }, []);
+    }, []);
+
+    // const arrowRef = arrowRef
+    const handleArrowScroll = () =>{
+        updateXarrow();
+    }
+    
+    // const [edges, setEdges] = useState([]);
+    // useEffect(()=> {
+    //     const addEdge = (elementIndex) => {
+    //         setEdges((prevEdges) => [...prevEdges, `Edge-${elementIndex}`])
+    //     };
+
+    //     const removeEdge = (elementIndex) => {
+    //         setEdges((prevEdges) => prevEdges.filter(edge => edge !== `Edge-${elementIndex}`));
+    //     };
+
+    //     const observerCallback = (entries) => {
+    //         entries.forEach(entry => {
+    //             const index = entry.target.getAttribute('data-index');
+    //             if (entry.isIntersecting) {
+    //                 addEdge(index);
+    //             } else {
+    //                 removeEdge(index);
+    //             }
+    //         })
+    //     }
+
+    //     const observer = new IntersectionObserver(observerCallback, {
+    //         threshold: 0.5
+    //     });
+    //     cardRef.current.forEach(ref => {
+    //         if (ref) observer.observe(ref)
+    //     })
+    //     return () => {
+    //         cardRef.current.forEach(ref=> {
+    //             if (ref) observer.unobserve(ref)
+    //         })
+    //     }
+    // })
 
 
     return (
-        <div className='DeviceDashboard' id="DeviceDashboard">
-            <InfiniteScrollLoop>
+        <div className='DeviceDashboard' id="DeviceDashboard" onScroll={handleArrowScroll}>
+            {/* <InfiniteScrollLoop> */}
                 {rows.map((devices, dev_index)=> {
                     return (
                         <div
@@ -81,10 +124,12 @@ const DeviceDashboard = ({parentDeviceRef}) => {
                         key={dev_index}>
                             {devices.map((device, id)=>{
                                 return (
-                                    <>
+                                    <div
+                                    key={id}
+                                    id={id}
+                                    >
                                         <Cards
                                         ref={cardRef}
-                                        key={id}
                                         user={device.user}
                                         device={device.device}
                                         device_latency={device.device_latency}
@@ -94,14 +139,14 @@ const DeviceDashboard = ({parentDeviceRef}) => {
                                         avid_status={device.avid_status}
                                         orientation={dev_index === 0? 'top': 'bottom'}
                                         />
-                                        <Xarrow start={'DeviceDashboard'} end={cardRef} curveness={0} showHead={false} color='green' zIndex={-1} divContainerStyle={{ position: "relative" }} key={id + 'arrow'}></Xarrow>
-                                    </>
+                                        <Xarrow start={parentDeviceRef} end={cardRef} startAnchor="middle" curveness={0} showHead={false} color='yellow' zIndex={10000} divContainerStyle={{ position: "relative" }} strokeWidth={2}></Xarrow>
+                                    </div>
                                 )
                             })}
                         </div>
                     )
                 })}
-            </InfiniteScrollLoop>
+            {/* </InfiniteScrollLoop> */}
         </div>
     )
 }

@@ -7,14 +7,16 @@ import { useRef, useEffect, forwardRef } from 'react';
 import Xarrow, {useXarrow, Xwrapper} from 'react-xarrows'
 
 
-const Cards = React.forwardRef((props, ref) => {
+const Cards = forwardRef((props, ref) => {
   const updateXarrow = useXarrow()
   const avidControls = useAnimationControls();
   const deviceControls = useAnimationControls();
 
   const cardRef = useRef(null)
-  const avidRef = useRef()
-  const deviceRef = useRef(ref)
+  // const avidRef = useRef()
+  // const deviceRef = useRef(ref)
+  // console.log("Cards: ")
+  // console.log(ref)
   useEffect(()=> {
 
     const switchObserver = new IntersectionObserver(
@@ -98,7 +100,7 @@ const Cards = React.forwardRef((props, ref) => {
           user={props.user}
           avid_latency={props.avid_latency}
           avid_status={props.avid_status}
-          ref={avidRef}
+          // ref={avidRef}
           />
         </motion.div>
         <motion.div
@@ -121,12 +123,13 @@ const Cards = React.forwardRef((props, ref) => {
           device_latency={props.device_latency}
           warning={props.warning}
           device_status={props.device_status}
-          ref={deviceRef}
+          // ref={deviceRef}
+          ref={ref}
           />
 
         </motion.div>
 
-        <Xarrow start={avidRef} end={deviceRef} curveness={0} showHead={false} color='green' startAnchor={"middle"} zIndex={-1} divContainerStyle={{ position: "relative" }}></Xarrow>
+        {/* <Xarrow start={avidRef} end={deviceRef} curveness={0} showHead={false} color='green' startAnchor={"middle"} zIndex={-1} divContainerStyle={{ position: "relative" }}></Xarrow> */}
 
       </Xwrapper>
     </div>
